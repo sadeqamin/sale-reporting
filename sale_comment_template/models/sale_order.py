@@ -49,6 +49,13 @@ class SaleOrder(models.Model):
                 self.comment_template1_id = comment_template
             elif comment_template.position == 'after_lines':
                 self.comment_template2_id = comment_template
+                
+    @api.multi
+    def render_html(self, template):
+        if template:
+            rendered_note = self.env['mail.template'].render_template(template, 'sale.order', [self.id])
+            for key, value in rendered_note.items():
+                return(str(value))
 
 
 class SaleOrderLine(models.Model):
