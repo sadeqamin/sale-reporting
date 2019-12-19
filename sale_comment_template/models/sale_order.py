@@ -44,10 +44,11 @@ class SaleOrder(models.Model):
     @api.onchange('partner_id')
     def onchange_partner_id_sale_comment(self):
         if self.partner_id:
+            comment_template_model = self.partner_id.comment_template_id.model
             comment_template = self.partner_id.comment_template_id
-            if comment_template.position == 'before_lines':
+            if comment_template.position == 'before_lines' and comment_template_model == 'sale.order':
                 self.comment_template1_id = comment_template
-            elif comment_template.position == 'after_lines':
+            elif comment_template.position == 'after_lines' and comment_template_model == 'sale.order':
                 self.comment_template2_id = comment_template
                 
     @api.multi
